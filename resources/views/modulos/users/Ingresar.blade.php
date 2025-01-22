@@ -2,53 +2,64 @@
 
 @section('ingresar')
 
+<style type="text/css">
+    .login-page, 
+    .register-page {
+        background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 30, 50, 1));
+    }
+    .login-page #back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: url('storage/plantilla/back.png');
+        background-size: cover;
+        overflow: hidden;
+        z-index: -1;
+    }
+</style>
+
+<div id="back"></div>
+
 <div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>Bonafont</b>Inventario uniformes</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
-
-    <form action="../../index2.html" method="post">
-      <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> Remember Me
-            </label>
-          </div>
-        </div>
-        <!-- /.col -->
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-        </div>
-        <!-- /.col -->
-      </div>
-    </form>
-
-    <div class="social-auth-links text-center">
-      <p>- o -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
+    <div class="login-logo">
+        <img src="{{ asset('storage/plantilla/logo-blanco-bloque.png') }}" 
+             class="img-responsive"
+             style="padding:20px 30px 0px 30px">  
     </div>
-    <!-- /.social-auth-links -->
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Ingresar al sistema</p>
 
-    <a href="#">Olvide mi contraseña</a><br>
-    <a href="register.html" class="text-center">Register a new membership</a>
+        <form action="{{route('login') }}" method="post">
+            @csrf
+      
+            <div class="form-group has-feedback">
+                <input type="email" class="form-control" placeholder="Email" name="email" required>
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+             @error('email')
 
-  </div>
-  <!-- /.login-box-body -->
+             <br> 
+             <div class="alert alert-danger">Error con los datos ingresados</div>
+
+             @enderror
+             
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" placeholder="Contraseña" name="password" required>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+               
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
+                </div>
+               
+            </div>
+        </form>       
+
+    </div>
 </div>
 
 @endsection
