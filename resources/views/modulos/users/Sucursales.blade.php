@@ -7,7 +7,7 @@
 
     <section class="content-header">
 
-        <h1> Inicio </h1>
+        <h1> Sucursales </h1>
 
     </section>
 
@@ -18,7 +18,8 @@
 
         <div class="box-header with-border">
 
-        <button class= "btn btn-primary" > Agregar Sucursal</button>
+        <button class= "btn btn-primary" data-toggle="modal" data-target="#modalAgregarSucursal"> 
+            Agregar Sucursal</button>
 
         </div>
 
@@ -43,9 +44,11 @@
 
     <form method="post" action="">
 
-    <div class="modal-header"style="background:#3c8dbc; color:white">
+    @csrf
 
-        <button type=button class="close" data-dismiss="modal">
+    <div class="modal-header"style="background:#3c8dbc; color:white;">
+
+        <button type="button" class="close" data-dismiss="modal">
         &times;
         </button>
 
