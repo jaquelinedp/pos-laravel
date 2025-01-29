@@ -19,7 +19,7 @@ class UsuariosController extends Controller
 //             'foto' => '',
 //             'estado' => '1',
 //             'ultimo_login' => '',
-//             'rol' => 'Aministrador',
+//             'rol' => 'Administrador',
 //             'password' =>Hash::make('123'),
 //             'id_sucursal' =>1,
 

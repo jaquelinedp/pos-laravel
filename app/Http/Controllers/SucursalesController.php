@@ -16,8 +16,12 @@ class SucursalesController extends Controller
 
     public function index()
     {
-       
-        return view('modulos.users.Sucursales');
+       if (auth()->user()->rol != 'Administrador') {
+            return redirect ('Inicio');
+        }
+
+        $sucursales = Sucursales::all();
+        return view('modulos.users.Sucursales', compact('sucursales'));
 
     }  
 
@@ -30,32 +34,25 @@ class SucursalesController extends Controller
                 'estado' => 1,
             ]);
 
-            return redirect ('Sucursales');
+            return redirect ('Sucursales')->with('success', 'Sucursal creada con exito');
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Sucursales $sucursales)
+    public function edit($id_sucursal)
     {
-        //
+     $sucursal= Sucursales::find ($id_sucursal);
+
+     return response ()->json($sucursal);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Sucursales $sucursales)
+    
+    public function update(Request $request)
     {
-        //
-    }
+        Sucursales::where ('id', $request->id)->update([
+            'nombre' => $request->nombre
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Sucursales $sucursales)
-    {
-        //
+        return redirect ('Sucursales')->with('success', 'Sucursal actualizada con exito');
     }
 
     /**

@@ -2,89 +2,113 @@
 
 @section ('contenido')
 
-
-    <div class="content-wrapper">
+<div class="content-wrapper">
 
     <section class="content-header">
-
         <h1> Sucursales </h1>
-
     </section>
 
-
     <section class="content">
-
         <div class="box">
-
-        <div class="box-header with-border">
-
-        <button class= "btn btn-primary" data-toggle="modal" data-target="#modalAgregarSucursal"> 
-            Agregar Sucursal</button>
-
-        </div>
+            <div class="box-header with-border">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarSucursal"> 
+                    Agregar Sucursal
+                </button>
+            </div>
 
             <div class="box-body">
-
-
+                <table class="table table-bordered table-striped table-hover dt-responsive">
+                    <thead>
+                        <tr>
+                            <th> ID </th>
+                            <th> Sucursal </th>
+                            <th> Acciones </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($sucursales as $sucursal)
+                        <tr>
+                            <td>{{ $sucursal->id }}</td>
+                            <td>{{ $sucursal->nombre }}</td>
+                            <td>
+                                <button class="btn btn-warning btnEditarSucursal" 
+                                    data-toggle="modal" 
+                                    data-target="#modalEditarSucursal" 
+                                    idSucursal="{{ $sucursal->id}}">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-
-            </div>
-
-        </section>
-
-
-
+        </div>
+    </section>
 </div>
 
+<!-- Modal Agregar Sucursal -->
 <div class="modal fade" id="modalAgregarSucursal">
-
     <div class="modal-dialog">
-
-    <div class="modal-content">
-
-    <form method="post" action="">
-
-    @csrf
-
-    <div class="modal-header"style="background:#3c8dbc; color:white;">
-
-        <button type="button" class="close" data-dismiss="modal">
-        &times;
-        </button>
-
-        <h4 class="modal-title">Agregar Sucursal</h4>
-
+        <div class="modal-content">
+            <form method="post" action="">
+                @csrf
+                <div class="modal-header" style="background:#3c8dbc; color:white;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Agregar Sucursal</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"> <i class="fa fa-building"></i></span>
+                                <input type="text" class="form-control input-lg" name="nombre" placeholder="Ingresar Nombre de la Sucursal" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger pull-left" type="button" data-dismiss="modal">Salir</button>
+                    <button class="btn btn-primary" type="submit">Agregar Sucursal</button>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div class="modal-body">
-    <div class="box-body">
-    <div class="form-group">
-
-    <div class="input-group">
-    
-        <span class="input-group-addon"> <i class="fa fa-building"> </i></span>
-
-        <input type="text" class="form-control input-lg" name="nombre" placeholder="Ingresar Nombre de la Sucursal" required>
-
-    </div>
-
-
-    </div>
-    </div>
-    </div>
-
-    <div class="modal-footer">
-
-    <button class="btn btn-danger pull-left" type="button" data-dismiss="modal">Salir</button>
-    <button class="btn btn-primary" type="submit">Agregar Sucursal</button>
-
-    </div>
-
-    </form>
-
-    </div>
-
 </div>
+
+<!-- Modal Editar Sucursal -->
+<div class="modal fade" id="modalEditarSucursal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{{url('Actualizar-Sucursal')}}">
+                @csrf
+                @method('put')
+                <div class="modal-header" style="background:#ffc107; color:black;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Editar Sucursal</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"> <i class="fa fa-building"></i></span>
+                                <input type="text" class="form-control input-lg" name="nombre" id="nombreEditar" required>
+                                <input type="hidden" class="form-control input-lg" name="id" id="idEditar" required>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger pull-left" type="button" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-success" type="submit">Guardar Cambios</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
 
 
 @endsection
