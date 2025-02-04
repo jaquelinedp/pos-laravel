@@ -27,6 +27,9 @@
                     </thead>
                     <tbody>
                         @foreach($sucursales as $sucursal)
+                          
+                        @if($sucursal->estado == 1)
+
                         <tr>
                             <td>{{ $sucursal->id }}</td>
                             <td>{{ $sucursal->nombre }}</td>
@@ -37,11 +40,59 @@
                                     idSucursal="{{ $sucursal->id}}">
                                     <i class="fa fa-pencil"></i>
                                 </button>
+
+                                 <a href="Cambiar-Estado-Sucursal/0/{{ $sucursal->id}}">
+                                    <button class="btn btn-danger">Deshabilitar</button>
+                                    
+                                 </a>
                             </td>
                         </tr>
+                        @endif
+
                         @endforeach
                     </tbody>
                 </table>
+
+                <hr>
+                <h2>Sucursales deshabilitadas</h2>
+
+                <table class="table table-bordered table-striped table-hover dt-responsive">
+                    <thead>
+                        <tr>
+                            <th> ID </th>
+                            <th> Sucursal </th>
+                            <th> Acciones </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($sucursales as $sucursal)
+                          
+                        @if($sucursal->estado == 0)
+
+                        <tr>
+                            <td>{{ $sucursal->id }}</td>
+                            <td>{{ $sucursal->nombre }}</td>
+                            <td>
+                                <button class="btn btn-warning btnEditarSucursal" 
+                                    data-toggle="modal" 
+                                    data-target="#modalEditarSucursal" 
+                                    idSucursal="{{ $sucursal->id}}">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+
+                                 <a href="Cambiar-Estado-Sucursal/1/{{ $sucursal->id}}">
+                                    <button class="btn btn-success">Habilitar</button>
+                                    
+                                 </a>
+                            </td>
+                        </tr>
+                        @endif
+                        
+                        @endforeach
+                    </tbody>
+                </table>
+
+
             </div>
         </div>
     </section>

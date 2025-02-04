@@ -55,11 +55,12 @@ class SucursalesController extends Controller
         return redirect ('Sucursales')->with('success', 'Sucursal actualizada con exito');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Sucursales $sucursales)
+    
+    public function CambiarEstado($estado, $id_sucursal)
     {
-        //
+        
+    Sucursales::find($id_sucursal)->update(['estado'=>$estado]);
+
+    return redirect('Sucursales');
     }
 }
