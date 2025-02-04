@@ -36,3 +36,4 @@ Route::get('Mis-Datos', function(){
 
 Route::post('Mis-Datos', [UsuariosController::class, 'ActualizarMisDatos']);
 Route::get('Usuarios', [UsuariosController::class,'index']);
+Route::post('Usuarios', [UsuariosController::class, 'store']);
