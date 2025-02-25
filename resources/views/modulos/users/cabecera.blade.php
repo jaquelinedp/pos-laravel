@@ -35,7 +35,7 @@
 
               @if( auth()->user()->foto=='')
 
-              <img src="{{ url('storage/users/anonymous.png') }}" class="user-image" alt="User Image">
+              <img src="{{ url('storage/users/anonymous.jpg') }}" class="user-image" alt="User Image">
 
               @else
 

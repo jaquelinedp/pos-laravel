@@ -44,7 +44,8 @@
         <li>
           <a href="{{url('Clientes')}}">
             <i class="fa fa-user-plus"></i> 
-            <span>  Clientes</span>
+            <span>Personal
+            </span>
           </a>
         </li>
 

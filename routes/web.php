@@ -7,7 +7,7 @@ use App\Http\Controllers\SucursalesController;
 
 Route::get('/', function () {
     return view('modulos.users.Ingresar');
-});
+})->name('Ingresar');
 
 Route::get('Inicio', function () {
     return view('modulos.Inicio');
@@ -37,3 +37,9 @@ Route::get('Mis-Datos', function(){
 Route::post('Mis-Datos', [UsuariosController::class, 'ActualizarMisDatos']);
 Route::get('Usuarios', [UsuariosController::class,'index']);
 Route::post('Usuarios', [UsuariosController::class, 'store']);
+Route::get('Cambiar-Estado-Usuario/{id_usuario}/{estado}',[UsuariosController::class,'CambiarEstado']);
+Route::get('Editar-Usuario/{id_usuario}', [UsuariosController::class, 'edit']);
+// Route::post('Verificar-Usuario', [UsuariosController::class,'VerificarUsuario']);
+Route::post('Verificar-Usuario', [UsuariosController::class,'VerificarUsuario']);
+Route::put('Actualizar-Usuario',[UsuariosController::class, 'update']);
+Route::get('Eliminar-Usuario/{id_usuario}',[UsuariosController::class, 'destroy']);

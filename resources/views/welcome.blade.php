@@ -6,6 +6,9 @@
   <title>Bonafont uniformes</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="{{url ('bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
   <!-- Font Awesome -->
@@ -27,12 +30,15 @@
   <link rel="stylesheet" href="{{url ('bower_components/bootstrap-daterangepicker/daterangepicker.css')}}">
 
 
-  <!-- DataTables -->
-  <link rel="stylesheet" href="{{url ('bower_components/datatables.net-bs/css/
-  dataTables.bootstrap.min.css')}}">
+  <!-- DataTables
+  <link rel="stylesheet" href="{{url ('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
+    DataTables -->
+   <!--  <link rel="stylesheet" href="{{url ('bower_components/datatables.net-bs/css/responsive.bootstrap.min.css')}}"> -->
+
    <!-- DataTables -->
-   <link rel="stylesheet" href="{{url ('bower_components/datatables.net-bs/css/
-  responsive.bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/responsive.bootstrap.min.css') }}">
+
 
 
  
@@ -99,6 +105,7 @@
 <script src="{{url('dist/js/demo.js')}}"></script>
 
 
+
 <!-- DataTables -->
 <script src="{{url('bower_components/datatables.net/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
@@ -116,9 +123,9 @@
 <script type="text/javascript">
 
     Swal.fire({
-        title: '{{ session('success') }}',
+        title: '{{ session("success") }}',
         icon: "success",
-        confirmButtonText:'Aceptar'
+        confirmButtonText:'Aceptar' 
       });
 
 </script>
@@ -127,3 +134,4 @@
 
 </body>
 </html>
+

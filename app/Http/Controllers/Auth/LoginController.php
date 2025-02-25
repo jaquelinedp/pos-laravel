@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -41,6 +42,16 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
 {
+
+    if ($user->estado == 0){
+        Auth::logout();
+        return redirect ()->route('Ingresar')->withErrors(['estado'=>'Su usuario se encuentra desactivado']);
+
+    }else{
+        $user->ultimo_login = now();
+        $user->save();
+    }
+
    $user->ultimo_login = now();
    $user->save();
 }

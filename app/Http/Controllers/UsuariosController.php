@@ -32,84 +32,131 @@ class UsuariosController extends Controller
 
 //         ]);
 //     }
+// public function ActualizarMisDatos(Request $request)
+// {
+
+//     if(auth()->user()->email != request('email')){
+
+//         if(request('password')){
+
+//             $datos = request()-> validate([
+
+//                 'name'=>['required', 'string', 'max:50'],
+//                 'email'=>['required',  'email', 'unique:users'],
+//                 'password'=>['required', 'string', 'min:3']
+                
+//             ]);
+//         }else{
+//             $datos = request()-> validate([
+
+//                 'name'=>['required', 'string', 'max:50'],
+//                 'email'=>['required',  'email', 'unique:users']
+              
+                
+//             ]);
+//         }
+//     }else{
+//         if(request('password')){
+//             $datos = request()-> validate([
+
+//                 'name'=>['required', 'string', 'max:50'],
+//                 'email'=>['required',  'email'],
+//                 'password'=>['required', 'string', 'min:3']
+                
+//             ]);
+//         }else{
+//             $datos = request()-> validate([
+
+//                 'name'=>['required', 'string', 'max:50'],
+//                 'email'=>['required',  'email', 'unique:users']
+              
+                
+//             ]);
+//         }
+//     }
+//     if(request('fotoPerfil')){
+//         if(auth()->user()->foto != ''){
+//         $path =storage_path('app/public/'.auth()->user()->foto);
+//         unlink($path);
+//         }
+
+//         $rutaImg = $request->file('fotoPerfil')->store('users', 'public');
+
+//     }else{
+//         $rutaImg = auth()->user()->foto;
+//     }
+
+//     if(isset($datos["password"])){
+
+//        DB::table('users')->where ('id', auth()->user()->id)
+//        ->update([
+
+//         'name'=>$datos["name"],
+//         'email' =>$datos["email"],
+//         'foto' =>$rutaImg,
+//         'password' =>Hash::make($datos["password"])
+//        ]);
+// }else{
+
+//     DB::table('users')->where ('id', auth()->user()->id)
+//        ->update([
+
+//         'name'=>$datos['name'], 
+//         'email' =>$datos['email'],
+//         'foto' =>$rutaImg,
+        
+//        ]);
+// }
+// return redirect('Mis-Datos');
+
+// }
 public function ActualizarMisDatos(Request $request)
 {
+    $user = auth()->user(); // Usuario autenticado
 
-    if(auth()->user()->email != request('email')){
+    // Validar datos
+    $rules = [
+        'name' => ['required', 'string', 'max:50'],
+    ];
 
-        if(request('password')){
-
-            $datos = request()-> validate([
-
-                'name'=>['required', 'string', 'max:50'],
-                'email'=>['required',  'email', 'unique:users'],
-                'password'=>['required', 'string', 'min:3']
-                
-            ]);
-        }else{
-            $datos = request()-> validate([
-
-                'name'=>['required', 'string', 'max:50'],
-                'email'=>['required',  'email', 'unique:users']
-              
-                
-            ]);
-        }
-    }else{
-        if(request('password')){
-            $datos = request()-> validate([
-
-                'name'=>['required', 'string', 'max:50'],
-                'email'=>['required',  'email'],
-                'password'=>['required', 'string', 'min:3']
-                
-            ]);
-        }else{
-            $datos = request()-> validate([
-
-                'name'=>['required', 'string', 'max:50'],
-                'email'=>['required',  'email', 'unique:users']
-              
-                
-            ]);
-        }
+    // Solo validar el email si se cambia
+    if ($request->email !== $user->email) {
+        $rules['email'] = ['required', 'email', 'unique:users,email,' . $user->id];
+    } else {
+        $rules['email'] = ['required', 'email'];
     }
-    if(request('fotoPerfil')){
-        if(auth()->user()->foto != ''){
-        $path =storage_path('app/public/'.auth()->user()->foto);
-        unlink($path);
+
+    // Solo validar la contraseña si se proporciona
+    if ($request->filled('password')) {
+        $rules['password'] = ['required', 'string', 'min:3'];
+    }
+
+    $datos = $request->validate($rules);
+
+    // Manejo de imagen
+    if ($request->hasFile('fotoPerfil')) {
+        // Eliminar la imagen anterior si existe
+        if ($user->foto && file_exists(storage_path('app/public/' . $user->foto))) {
+            unlink(storage_path('app/public/' . $user->foto));
         }
 
+        // Guardar la nueva imagen
         $rutaImg = $request->file('fotoPerfil')->store('users', 'public');
-
-    }else{
-        $rutaImg = auth()->user()->foto;
+    } else {
+        $rutaImg = $user->foto;
     }
 
-    if(isset($datos["password"])){
+    // Actualizar datos en la base de datos
+    $user->update([
+        'name' => $datos['name'],
+        'email' => $datos['email'],
+        'foto' => $rutaImg,
+        'password' => isset($datos['password']) ? Hash::make($datos['password']) : $user->password,
+    ]);
 
-       DB::table('users')->where ('id', auth()->user()->id)
-       ->update([
-
-        'name'=>$datos["name"],
-        'email' =>$datos["email"],
-        'foto' =>$rutaImg,
-        'password' =>Hash::make($datos["password"])
-       ]);
-}else{
-
-    DB::table('users')->where ('id', auth()->user()->id)
-       ->update([
-
-        'name'=>$datos['name'],
-        'email' =>$datos['email'],
-        'foto' =>$rutaImg,
-        
-       ]);
+    return redirect('Mis-Datos')->with('success', 'Perfil actualizado correctamente');
 }
-return redirect('Mis-Datos');
 
-}
 
 
    
@@ -135,7 +182,7 @@ return redirect('Mis-Datos');
         ]);
         $datos =request();
 
-        if ($datos["rol"]!= 'Administrador'){
+        if ($datos["rol"] == 'Administrador'){
             $id_sucursal=0;
         }else{
             $id_sucursal=$datos["id_sucursal"];
@@ -157,35 +204,109 @@ return redirect('Mis-Datos');
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+   
+    public function CambiarEstado($id_usuario, $estado)
     {
-        //
+        User::find ($id_usuario)->update(['estado'=>$estado]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    
+    public function edit($id_usuario)
     {
-        //
+        $usuario = User::find($id_usuario);
+        return response ()->json($usuario); 
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+
+    // public function VerificarUsuario (Request $request)
+    // {
+    //     $user = User::find($request->id);
+        
+    //     if($request->email != $user ["email"]){
+
+    //         $emailExistente = User::where('email', $request -> email)->exists();
+
+    //         if($emailExistente!= null){
+    //             $verificacion = false;
+    //         }else{
+    //             $verificacion=true;
+    //         }
+    //     }else{  
+    //         $verificacion = true;
+    //     }
+
+    //     return response()->json(['emailVerificacion'=>$verificacion]);
+    // }
+
+    public function VerificarUsuario (Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'id' => 'required|integer',
+    ]);
+
+    $user = User::find($request->id);
+    if (!$user) {
+        return response()->json(['error' => 'Usuario no encontrado'], 404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    if ($request->email != $user->email) {
+        $emailExistente = User::where('email', $request->email)->exists();
+        $verificacion = !$emailExistente;
+    } else {  
+        $verificacion = true;
+    }
+
+    return response()->json(['emailVerificacion' => $verificacion]);
+}
+
+
+    public function update(Request $request)
     {
-        //
+        if(request('password')){
+            $validarPass=request()->validate([
+                    'password'=>["string","min:3"]
+                ]);
+                $pass=true;
+        }else{
+                $pass=false;
+        }
+
+        
+
+        $datos=request();
+        
+        if($datos["rol"]=='Administrador'){
+            $id_sucursal=0;
+        }else{
+            $id_sucursal=$datos["id_sucursal"];
+        }
+
+        $User=User::find($datos["id"]);
+
+        $User->name=$datos["name"];
+        $User->email=$datos["email"];
+        $User->id_sucursal=$id_sucursal;
+        $User->rol=$datos["rol"];
+
+        if($pass != false){
+            $User->password = Hash::make($datos["password"]);
+        }
+        $User->save();
+        return redirect('Usuarios')->with('success','El usuario ha sido actualizado correctamente');
+    }
+
+        public function destroy($id_usuario)
+    {
+        $usuario = User::find($id_usuario);
+
+        if($usuario->foto != ''){
+            $path = storage_path('app/public'. $usuario->foto);
+            unlink($path);
+        }
+
+        User::destroy($id_usuario);
+
+        return redirect ('Usuarios');
     }
 }
