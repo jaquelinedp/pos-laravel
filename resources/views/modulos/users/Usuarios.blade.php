@@ -12,7 +12,7 @@
          <div class="box-body">
             <table class="table table-bordered table-striped table-hover dt-responsive " >
                <thead>
-                  <tr>
+                <tr>
                      <th style="width: 10px;" > No. </th>
                      <th>Nombre</th>
                      <th>Email</th>
@@ -23,8 +23,8 @@
                      <th>Ultimo login</th>
                      <th>      </th>
                   </tr>
-               </thead>
-               <tbody>
+                    </thead>
+                    <tbody>
                   @foreach ( $usuarios as $key => $user )
                   <tr>
                      <td>{{ $key+1 }}</td>

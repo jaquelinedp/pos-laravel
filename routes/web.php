@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\SucursalesController;
-
+use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\ProductosController;
+use Illuminate\Support\Facades\Facade;
 
 Route::get('/', function () {
     return view('modulos.users.Ingresar');
@@ -43,3 +45,15 @@ Route::get('Editar-Usuario/{id_usuario}', [UsuariosController::class, 'edit']);
 Route::post('Verificar-Usuario', [UsuariosController::class,'VerificarUsuario']);
 Route::put('Actualizar-Usuario',[UsuariosController::class, 'update']);
 Route::get('Eliminar-Usuario/{id_usuario}',[UsuariosController::class, 'destroy']);
+
+//Categorias
+
+Route::get('Categorias',[CategoriasController::class, 'index']);
+Route::post('Categorias',[CategoriasController::class,'store']);
+Route::get('Editar-Categoria/{id_categoria}', [CategoriasController::class, 'edit']);
+Route::put('Actualizar-Categoria', [CategoriasController::class, 'update']);
+Route::get('Eliminar-Categoria/{id_categoria}', [CategoriasController::class, 'destroy']);
+
+//Productos
+Route::get('Productos', [ProductosController::class, 'index']);
+Route::get('Generar-Codigo-Producto/{id_categoria}', [ProductosController::class, 'GenerarCodigo']);

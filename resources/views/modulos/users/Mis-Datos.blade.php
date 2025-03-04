@@ -47,7 +47,7 @@
                         @if(auth()->user()->foto)
                             <img src="{{ url('storage/' . auth()->user()->foto) }}" width="150px" height="150px">
                         @else
-                        <img src="{{ asset('storage/users/anonymous.jpg') }}" width="150px" height="150px">
+                        <img src="{{ asset('storage/users/perfildefault.png') }}" width="150px" height="150px">
 
 
                         @endif

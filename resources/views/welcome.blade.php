@@ -117,6 +117,7 @@
 
 <script src="{{ url('js/plantilla.js') }}"></script>
 <script src="{{ url('js/usuarios.js') }}"></script>
+<script src="{{ url('js/productos.js') }}"></script>
 
 @if (session('success'))
 

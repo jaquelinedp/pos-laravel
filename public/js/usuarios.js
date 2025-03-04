@@ -135,3 +135,5 @@ $(".table").on('click','.btnEliminarUsuario', function(){
         }
     })
 })
+
+
