@@ -57,3 +57,7 @@ Route::get('Eliminar-Categoria/{id_categoria}', [CategoriasController::class, 'd
 //Productos
 Route::get('Productos', [ProductosController::class, 'index']);
 Route::get('Generar-Codigo-Producto/{id_categoria}', [ProductosController::class, 'GenerarCodigo']);
+Route::post('Productos', [ProductosController::class, 'AgregarProducto']);
+Route::get('Editar-Producto/{id_producto}', [ProductosController::class, 'EditarProducto']);
+Route::put('Actualizar-Producto', [ ProductosController::class, 'ActualizarProducto']);
+Route::get('Eliminar-Producto/{id_producto}', [ProductosController::class, 'EliminarProducto']);

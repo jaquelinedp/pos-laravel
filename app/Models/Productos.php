@@ -13,8 +13,6 @@ class Productos extends Model
     'codigo',
     'descripcion',
     'stock',
-    'precio_c',
-    'precio_v',
     'imagen',
     'agregado',
     'ventas'

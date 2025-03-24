@@ -39,6 +39,8 @@
 <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/responsive.bootstrap.min.css') }}">
 
+<!-- ICheck-->
+<link rel="stylesheet" href="{{ asset('bower_components/iCheck/all.css') }}">
 
 
  
@@ -113,6 +115,11 @@
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- ICheck -->
+
+<script src="{{url('bower_components/iCheck/icheck.min.js')}}"></script>
+
 
 
 <script src="{{ url('js/plantilla.js') }}"></script>

@@ -18,7 +18,12 @@ class ProductosController extends Controller
     {
         $categorias = DB::table('categorias')->orderBy ('nombre', 'asc')->get();
 
-        return view ('modulos.productos.Productos', compact('categorias'));
+        $productos = DB::table('productos')->leftJoin('categorias', 'productos.id_categoria', '=', 'categorias.id' )
+        ->select('productos.*', 'categorias.nombre as categoria_nombre')
+        ->get();
+        
+
+        return view ('modulos.productos.Productos', compact('categorias', 'productos'));
     }
 
     public function GenerarCodigo($id_categoria)
@@ -34,51 +39,85 @@ class ProductosController extends Controller
         return response()->json($respuesta);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function AgregarProducto(Request $request)
     {
-        //
+        $datos = request();
+
+        if (request('imagen')){
+
+            $rutaImg = $datos ["imagen"]->store('productos', 'public');
+        }else{
+            $rutaImg = " ";
+        }
+
+        Productos::create([
+
+            'id_categoria'=> $datos["id_categoria"],
+            'codigo'=> $datos["codigo"],
+            'descripcion'=> $datos["descripcion"],
+            'stock'=> $datos["stock"],
+            'imagen'=> $rutaImg,
+            'ventas'=> 0   
+            
+            
+        ]);
+
+        return redirect ('Productos')->with('success', 'Producto agregado correctamente');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    
+     public function EditarProducto( $id_producto)
     {
-        //
+        $producto = Productos::find($id_producto);
+
+        return response()->json($producto);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Productos $productos)
+   
+    public function ActualizarProducto(Request $request)
     {
-        //
+        $datos=request();
+
+        $producto =Productos::find($request->id);
+
+        if(request ('imagen')){
+        $path = storage_path(('app/public/').$producto->imagen);
+        
+        unlink($path);
+             $rutaImg = $datos["imagen"]->store('productos', 'public');
+        }else{
+            $rutaImg = $producto->imagen;
+        }
+
+        Productos::where('id', $datos["id"])
+        ->update([
+
+                'id_categoria'=>$datos["id_categoria"],
+                'codigo'=>$datos["codigo"],
+                'descripcion'=>$datos["descripcion"],
+                'stock'=>$datos["stock"],
+                'imagen'=>$rutaImg
+
+
+        ]);
+
+        return redirect('Productos')->with('success', 'El producto fue modificado correctamente');
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Productos $productos)
+   
+    public function EliminarProducto( $id_producto)
     {
-        //
-    }
+        $producto=Productos::find($id_producto);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Productos $productos)
-    {
-        //
-    }
+        if($producto->imagen != " "){
+            $path = storage_path(('app/public/').$producto->imagen);
+            
+        }  
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Productos $productos)
-    {
-        //
+        $producto->delete();
+
+        return redirect('Productos')->with('success', 'El producto fue eliminado correctamente');
+
     }
 }
